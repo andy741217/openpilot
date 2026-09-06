@@ -33,7 +33,11 @@ class Priority(IntEnum):
 
 # Event types
 class ET:
-  ENABLE = 'enable'
+  # on main, LAT_ENABLE? on set, ENABLE? on brake, USER_DISABLE_LONG?
+  # or simpler, USER_DISABLE just relates to long, but how should other DISABLEs affect it?
+  # should NO_ENTRY conditions be different for each mode? should it even play a tone if you turn on main in park after you start the car?
+  # or should it "enable" and wait until drive?
+  LAT_ENABLE = 'latEnable'
   PRE_ENABLE = 'preEnable'
   OVERRIDE_LATERAL = 'overrideLateral'
   OVERRIDE_LONGITUDINAL = 'overrideLongitudinal'
@@ -682,6 +686,12 @@ EVENTS: dict[int, dict[str, Alert | AlertCallbackType]] = {
   EventName.buttonEnable: {
     ET.ENABLE: EngagementAlert(AudibleAlert.engage),
   },
+
+  EventName.latEnable: {
+    # TODO: two different tones?
+    ET.LAT_ENABLE: EngagementAlert(AudibleAlert.engage),
+  },
+
 
   EventName.pcmDisable: {
     ET.USER_DISABLE: EngagementAlert(AudibleAlert.disengage),
